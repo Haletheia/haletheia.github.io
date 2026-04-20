@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HALETHEIA — Ethical AI Infrastructure & Enterprise Harness</title>
+    <title>HCP Protocol — Specifications</title>
     <meta name="description" content="HALETHEIA AI Lab: We build structural AI infrastructure to optimize people, not processes. Enterprise Agent Harness, Security Triad, and Sovereign Data.">
     
     <!-- Open Graph -->
@@ -854,161 +854,73 @@
         <div class="container">
             <a href="/" class="logo">HALETHEIA</a>
             <ul class="nav-links">
-                <li><a href="/" class="nav-active">Home</a></li>
+                <li><a href="/" >Home</a></li>
                 <li><a href="/documentation.html">Docs</a></li>
                 <li><a href="/use-cases.html">Use Cases</a></li>
-                <li><a href="/specs.html">HCP Specs</a></li>
+                <li><a href="/specs.html" class="nav-active">HCP Specs</a></li>
                 <li><a href="https://github.com/haletheia">GitHub</a></li>
             </ul>
             <a href="/waitlist.html" class="cta-button">JOIN BETA</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero glow">
+
+    <section class="hero glow" style="min-height: 50vh; padding-top: 120px;">
         <div class="container">
             <div class="hero-content fade-in">
-                <span class="eyebrow">Enterprise Agent Harness</span>
-                <h1>Building ethical,<br>structural AI systems.</h1>
-                <p style="font-size: 1.15rem; color: var(--accent); margin-bottom: 1rem;"><strong>Local-first. Sovereign Data. Epistemic Humility.</strong></p>
-                <p>We build structural AI infrastructure to <strong>optimize people, not processes</strong>. Haletheia provides the secure, transparent, and ethical orchestration layer that connects your proprietary knowledge to advanced intelligence models, completely isolating and protecting your execution environment.</p>
-                <div class="hero-actions">
-                    <a href="/documentation.html" class="primary-btn">Read the Docs</a>
-                    <a href="#manifesto" class="secondary-btn">Read our Manifesto</a>
-                </div>
-                
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value mono">14</div>
-                        <div class="stat-label">Open Source Core Repos</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value mono">0</div>
-                        <div class="stat-label">Opaque Telemetry</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value mono">MIT</div>
-                        <div class="stat-label">License on Security Stack</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value mono">Q3</div>
-                        <div class="stat-label">NIDALI Enterprise Beta</div>
-                    </div>
+                <span class="eyebrow">Human-Code-AI Protocol</span>
+                <h1>HCP Specification v1.4.0</h1>
+                <p>Context as code. A document discipline framework for AI-assisted development. Treat context like production code: versioned, tested, and ready for deployment.</p>
+                <div class="hero-actions" style="margin-top: 2rem;">
+                    <a href="https://github.com/haletheia/human-code-ai-protocol" class="primary-btn">View on GitHub</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Manifesto Section -->
-    <section id="manifesto" class="features slide-in" style="border-top: 1px solid var(--border);">
-        <div class="container">
-            <div class="section-header">
-                <span class="eyebrow">The Structural Manifesto</span>
-                <h2>The illusion of neutrality</h2>
-            </div>
+    <section class="features slide-in" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4rem 0;">
+        <div class="container" style="max-width: 900px; margin: 0 auto;">
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem;">Technical Specification</h2>
+            <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.8;">
+                HCP (Human-Code-AI Protocol) is an open framework for structuring context in AI-assisted development. It enables teams to treat context as production-grade code: versioned, tested, auditable, and interoperable across AI tools and platforms.
+            </p>
+
+            <h3 style="font-size: 1.5rem; margin: 2.5rem 0 1rem; color: var(--text);">1. The .procontext/ Directory</h3>
+            <p style="color: var(--text-dim); margin-bottom: 1rem; line-height: 1.8;">At the core of HCP is the standardized directory structure that lives alongside your source code. This predictable layout allows AI agents to instantly locate architectural rules, ongoing sessions, and foundational knowledge without searching blindly.</p>
+            <ul style="color: var(--text-dim); line-height: 1.8; list-style-type: disc; margin-left: 1.5rem; margin-bottom: 2rem;">
+                <li><strong><code>context.md</code></strong>: The single source of truth. Contains critical business logic, current state, and strict invariants.</li>
+                <li><strong><code>knowledge/</code></strong>: Static knowledge base. Markdown files defining APIs, domain terminology, and external integrations.</li>
+                <li><strong><code>strategic/</code></strong>: Long-term vision and architecture plans.</li>
+                <li><strong><code>sessions/</code></strong>: Immutable logs of AI-assisted work sessions. Each task gets its own folder for traceability.</li>
+                <li><strong><code>decisions/</code></strong>: Architecture Decision Records (ADRs) generated by the AI or humans to document "why" something was built a certain way.</li>
+            </ul>
+
+            <h3 style="font-size: 1.5rem; margin: 2.5rem 0 1rem; color: var(--text);">2. The RPI+ Workflow (States)</h3>
+            <p style="color: var(--text-dim); margin-bottom: 1rem; line-height: 1.8;">HCP enforces a state-machine approach to AI collaboration. Never jump straight to implementation. By explicitly declaring the state in your prompt (e.g., <code>STATE: RESEARCH</code>), you control the agent's behavior.</p>
+            <ul style="color: var(--text-dim); line-height: 1.8; list-style-type: disc; margin-left: 1.5rem; margin-bottom: 2rem;">
+                <li><strong>RESEARCH</strong>: Investigate, analyze, and understand without making code changes.</li>
+                <li><strong>PLAN</strong>: Design the solution and define quality gates. Requires human approval.</li>
+                <li><strong>IMPLEMENT</strong>: Write the code strictly following the approved plan.</li>
+                <li><strong>VERIFY</strong>: Run tests, validate against invariants, and check metrics.</li>
+                <li><strong>COMPACT</strong>: Consolidate old session logs and update <code>context.md</code> with new learnings.</li>
+            </ul>
+
+            <h3 style="font-size: 1.5rem; margin: 2.5rem 0 1rem; color: var(--text);">3. Context Budget & Compaction</h3>
+            <p style="color: var(--text-dim); margin-bottom: 2rem; line-height: 1.8;">
+                LLMs suffer from context window degradation. HCP solves this through <strong>Pattern 7: Thresholds</strong>. When you accumulate more than 10 sessions or the context budget exceeds 80%, the <code>COMPACT</code> state is triggered. The AI reads old sessions, extracts "pure gold" (patterns, architectural decisions), moves them to <code>knowledge/</code> or <code>decisions/</code>, and archives verbose logs.
+            </p>
             
-            <div style="max-width: 800px;">
-                <p style="font-size: 1.4rem; color: var(--text); line-height: 1.6; margin-bottom: 2rem; font-style: italic;">
-                    "Hubo un momento en el que la tecnología era una herramienta. Algo externo, delimitado, opcional. Hoy esa distinción ha desaparecido. Ya no interactuamos con sistemas: <strong>vivimos dentro de ellos</strong>."
-                </p>
-                <p style="font-size: 1.1rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 1.5rem;">
-                    Cada decisión que tomamos está mediada, filtrada o amplificada por estructuras computacionales. No son neutrales. Son la materialización de decisiones humanas pasadas: objetivos, sesgos, modelos de negocio, prioridades.
-                </p>
-                <p style="font-size: 1.1rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 1.5rem;">
-                    Por eso, el debate entre "algoritmos vs. humanos" es incorrecto. Los algoritmos no compiten con lo humano. <strong>Lo extienden, lo deforman y lo escalan</strong>.
-                </p>
-                <h3 style="font-size: 1.5rem; color: var(--text); margin-top: 3rem; margin-bottom: 1rem;">La alfabetización del futuro es estructural</h3>
-                <p style="font-size: 1.1rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 1.5rem;">
-                    No hablamos de aprender a programar. Hablamos de entender qué significa delegar decisiones en modelos opacos. Si hay un lugar donde la ética deja de ser discurso y se convierte en realidad, es en el <strong>diseño de la arquitectura</strong>.
-                </p>
-                <p style="font-size: 1.1rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 1.5rem;">
-                    En HALETHEIA, construimos el ecosistema <strong>NIDALI</strong> para devolver la soberanía de datos al usuario, instaurando humildad epistémica y auditoría por diseño, evitando la dilución de responsabilidad corporativa.
-                </p>
-                <a href="/specs.html" class="secondary-btn" style="margin-top: 1rem;">View the HCP Specifications</a>
-            </div>
+            <h3 style="font-size: 1.5rem; margin: 2.5rem 0 1rem; color: var(--text);">4. Roles & Vibes</h3>
+            <p style="color: var(--text-dim); margin-bottom: 2rem; line-height: 1.8;">
+                Instead of relying on generic AI personas, HCP uses explicit Roles and Vibes.<br>
+                <strong>Roles</strong> define the skillset (e.g., <code>Role: ARCHITECT</code>, <code>Role: TESTER</code>).<br>
+                <strong>Vibes</strong> define the communication style and strictness (e.g., <code>Vibe: PRECISO</code>, <code>Vibe: DIDÁCTICO</code>).
+            </p>
         </div>
     </section>
 
-    <!-- Architecture & Core Stacks Section -->
-    <section id="architecture" class="products slide-in">
-        <div class="container">
-            <div class="section-header">
-                <h2>The HALETHEIA Infrastructure</h2>
-                <p>A modular, highly secure ecosystem designed for corporate environments</p>
-            </div>
 
-            <div class="product-grid">
-                <!-- NIDALI Enterprise -->
-                <div class="product-card" style="border: 2px solid var(--accent); position: relative; background: var(--surface-raised);">
-                    <span style="position: absolute; top: -1px; right: -1px; background: var(--accent); color: var(--bg); padding: 0.35rem 0.85rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-bottom-left-radius: var(--radius-md);">Enterprise / Q3 2026</span>
-                    <span class="product-icon">🧠</span>
-                    <h3>NIDALI Agent Harness</h3>
-                    <p>The sovereign orchestrator. A frontend API Gateway (WebFlux) connecting modern Angular SPA to the Hidden Brain RAG and LiiADA routing, secured by HCP context rules.</p>
-                    <ul class="product-list">
-                        <li><strong>Bóvedas Curadas:</strong> Hyper-targeted RAG 4.0 data retrieval</li>
-                        <li><strong>Trust Validation:</strong> Human-in-the-loop evidence approval</li>
-                        <li><strong>Destilador Nocturno:</strong> Autonomous continuous research</li>
-                        <li><strong>Epistemic Humility:</strong> Models trained to say "I don't know"</li>
-                    </ul>
-                    <a href="/use-cases.html" class="product-link" style="margin-top: 1rem; display: inline-block;">Explore Enterprise Use Cases →</a>
-                </div>
-
-                <!-- Security Stack -->
-                <div class="product-card">
-                    <span class="product-icon">🛡️</span>
-                    <h3>The Security Triad</h3>
-                    <span class="badge stable" style="position: absolute; top: 1.5rem; right: 1.5rem;">OSS Core</span>
-                    <p>4 architectural layers for AI execution safety. We protect your infrastructure from the LLM, and the LLM from hallucinations.</p>
-                    <ul class="product-list">
-                        <li><strong>Xokito:</strong> Privacy PRE-LLM (Zero PII leak)</li>
-                        <li><strong>Ethilia:</strong> Ethics architecture validation</li>
-                        <li><strong>GAIA:</strong> Lagrangian coherence evaluation</li>
-                        <li><strong>Cutufato & Sentinel:</strong> Immutable audit trail & package firewalls</li>
-                    </ul>
-                    <a href="/documentation.html" class="product-link">Read Integration Docs →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features slide-in">
-        <div class="container">
-            <div class="section-header">
-                <h2>Engineered for Transparency</h2>
-                <p>Ethics and performance built into the foundation, not as an afterthought.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon">🏠</div>
-                    <h3>Sovereign Data</h3>
-                    <p>True local-first support. Integrate with Ollama or private cloud models. Your enterprise data stays inside your network. Zero external API leaks.</p>
-                </div>
-
-                <div class="feature">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Continuous Autonomous Research</h3>
-                    <p>The Night Distiller automatically updates your curated vaults via subagents while you sleep, applying strict truth validation on new sources.</p>
-                </div>
-
-                <div class="feature">
-                    <div class="feature-icon">⚖️</div>
-                    <h3>Ethical by Design</h3>
-                    <p>Pre-validated ethics routing. Cultural awareness models. Strict auditing via Cutufato. Our architecture prevents harm before execution occurs.</p>
-                </div>
-
-                <div class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <h3>High Performance</h3>
-                    <p>Asynchronous reactive WebFlux gateways, Wasm sandboxes, and Rust-based OS command brokers. Lightning fast, memory-safe execution.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="get-started">
+<footer id="get-started">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-section">
