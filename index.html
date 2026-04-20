@@ -25,17 +25,34 @@
         }
 
         :root {
+            /* Color System (Vercel/Stripe Dark Mode inspired) */
             --bg: #0a0a0a;
             --surface: #111111;
             --surface-raised: #1a1a1a;
-            --border: #222222;
-            --text: #ffffff;
-            --text-dim: #888888;
-            --text-dimmer: #555555;
+            --border: #333333;
+            --text: #ededed;
+            --text-dim: #a1a1aa;
+            --text-dimmer: #71717a;
+            
+            /* Brand */
             --accent: #00ff88;
             --accent-dim: rgba(0, 255, 136, 0.1);
-            --accent-glow: rgba(0, 255, 136, 0.3);
-            --spacing: clamp(1rem, 5vw, 2rem);
+            --accent-glow: rgba(0, 255, 136, 0.25);
+            
+            /* Spacing System (8px grid) */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-layout: clamp(16px, 5vw, 32px);
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --radius-xl: 12px;
         }
 
         html, body {
@@ -44,12 +61,17 @@
         }
 
         body {
-            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6, .logo, .eyebrow {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            letter-spacing: -0.02em;
         }
 
         .mono {
@@ -100,7 +122,7 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 var(--spacing);
+            padding: 0 var(--spacing-layout);
         }
 
         /* Navigation */
@@ -290,22 +312,20 @@
         }
 
         .cta-button {
-            padding: 0.75rem 1.5rem;
+            padding: 10px 20px;
             background: transparent;
             border: 1px solid var(--accent);
+            border-radius: var(--radius-sm);
             color: var(--accent);
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
         }
 
         .cta-button:hover {
             background: var(--accent);
-            color: var(--bg);
-            box-shadow: 0 0 30px var(--accent-glow);
+            color: #000;
         }
 
         /* Hero Section */
@@ -353,41 +373,43 @@
         }
 
         .primary-btn {
-            padding: 1rem 2.5rem;
+            padding: 12px 24px;
             background: var(--accent);
-            color: var(--bg);
+            color: #000000;
             border: none;
-            font-weight: 700;
+            border-radius: var(--radius-md);
+            font-weight: 600;
             text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
             cursor: pointer;
         }
 
         .primary-btn:hover {
-            box-shadow: 0 0 40px var(--accent-glow);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 14px 0 var(--accent-glow);
+            transform: translateY(-1px);
         }
 
         .secondary-btn {
-            padding: 1rem 2.5rem;
+            padding: 12px 24px;
             background: transparent;
             color: var(--text);
             border: 1px solid var(--border);
-            font-weight: 600;
+            border-radius: var(--radius-md);
+            font-weight: 500;
             text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
         }
 
         .secondary-btn:hover {
-            border-color: var(--text);
+            border-color: var(--text-dim);
             background: var(--surface-raised);
         }
 
@@ -450,8 +472,9 @@
         .product-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            padding: 3rem;
-            transition: all 0.3s;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
             min-width: 0;
@@ -591,7 +614,8 @@
         .pricing-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            padding: 3rem;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
             position: relative;
             min-width: 0;
         }
@@ -742,11 +766,12 @@
 
         /* Status Badges */
         .badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 0.3rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 500;
             font-family: 'JetBrains Mono', monospace;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -901,7 +926,7 @@
 
                 <!-- NEW: Security Triad v2.0 -->
                 <div class="product-card" style="border: 2px solid var(--accent); position: relative; background: var(--surface-raised);">
-                    <span style="position: absolute; top: -12px; right: 20px; background: var(--accent); color: var(--bg); padding: 0.25rem 0.75rem; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">🆕 Q2 2026</span>
+                    <span style="position: absolute; top: -1px; right: -1px; background: var(--accent); color: var(--bg); padding: 0.35rem 0.85rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-bottom-left-radius: var(--radius-md);">🆕 Q2 2026</span>
                     <span class="product-icon">🛡️</span>
                     <h3>Security Triad v2.0</h3>
                     <p>4 architectural layers for AI safety. Privacy PRE-LLM, ethics validation, coherence checking, audit trail.</p>
@@ -929,21 +954,6 @@
                     </ul>
                     <a href="/knowledge.html" class="product-link">Explore Stack →</a>
                 </div>
-
-                <!-- Stack 3: Agent Framework -->
-                <div class="product-card">
-                    <span class="product-icon">🤖</span>
-                    <h3>Agent Framework</h3>
-                    <span class="badge beta" style="position: absolute; top: 1.5rem; right: 1.5rem;">Freemium</span>
-                    <p>Ethical AI agents with CIPP memory, epistemic humility, and GAIA cognitive validation.</p>
-                    <ul class="product-list">
-                        <li>LiiaDA — Multi-provider orchestrator <span class="badge beta">v0.4</span></li>
-                        <li>AIR — AI Package Registry <span class="badge beta">Beta</span></li>
-                        <li>HCP — Human-Code-AI Protocol <span class="badge stable">v1.4</span></li>
-                    </ul>
-                    <a href="/agents.html" class="product-link">Explore Framework →</a>
-                </div>
-
             </div>
         </div>
     </section>
@@ -1091,7 +1101,7 @@
                     <ul class="pricing-features">
                         <li><strong>Security Triad Complete</strong>: Xokito + Ethilia + GAIA + Cutufato</li>
                         <li><strong>hub-integrations</strong>: Business connectors (Sheets, WhatsApp, Email)</li>
-                        <li><strong>LiiaDA Pro</strong>: Agent loop + CIPP memory + validation</li>
+                        <li><strong>NIDALI Core</strong>: Agent Harness + CIPP memory + GAIA validation</li>
                         <li><strong>Hidden Brain Pro</strong>: 10GB storage, 1K queries/mo</li>
                         <li><strong>AIR Private</strong>: Private packages + analytics</li>
                         <li>Email support</li>
@@ -1150,7 +1160,7 @@
                     <ul class="footer-links">
                         <li><a href="/security.html">Security Stack</a></li>
                         <li><a href="/knowledge.html">Knowledge Stack</a></li>
-                        <li><a href="/agents.html">Agent Framework</a></li>
+                        <li><a href="/agents.html">NIDALI Harness</a></li>
                         <li><a href="/hcp.html">HCP Protocol</a></li>
                     </ul>
                 </div>
@@ -1160,7 +1170,7 @@
                     <ul class="footer-links">
                         <li><a href="https://github.com/haletheia">Documentation</a></li>
                         <li><a href="https://github.com/haletheia">GitHub</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="#" title="Coming soon">Blog (Soon)</a></li>
                     </ul>
                 </div>
 
@@ -1169,7 +1179,7 @@
                     <ul class="footer-links">
                         <li><a href="https://github.com/haletheia/discussions">Discussions</a></li>
                         <li><a href="https://twitter.com/haletheia_">Twitter</a></li>
-                        <li><a href="https://linkedin.com/company/haletheia">LinkedIn (soon)</a></li>
+                        <li><a href="#" title="Coming soon">LinkedIn (Soon)</a></li>
                         <li><a href="#" title="Coming soon">Discord (Soon)</a></li>
                     </ul>
                 </div>
