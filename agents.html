@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Framework — HALETHEIA</title>
+    <meta name="description" content="LiiaDA — Ethical AI Agent Framework: product-level teaser, beta waitlist Q3 2026. Trust, safety, and orchestration without exposing proprietary internals.">
+    <meta property="og:title" content="Agent Framework — HALETHEIA">
+    <meta property="og:description" content="Ethical AI Agent Framework (LiiaDA). Coming Q3 2026.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://haletheia.github.io/agents.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --surface-raised: #1a1a1a;
+            --border: #222222;
+            --text: #ffffff;
+            --text-dim: #888888;
+            --text-dimmer: #555555;
+            --accent: #00ff88;
+            --accent-dim: rgba(0, 255, 136, 0.1);
+            --accent-glow: rgba(0, 255, 136, 0.3);
+            --spacing: clamp(1rem, 5vw, 2rem);
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+            z-index: -1;
+            animation: grid-shift 20s linear infinite;
+        }
+
+        @keyframes grid-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Glow Effect */
+        .glow {
+            position: relative;
+        }
+
+        .glow::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing);
+        }
+
+        /* Navigation */
+        /* Barra de progreso de scroll (fija arriba, encima del nav) */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: var(--accent);
+            z-index: 1100;
+            transition: width 0.15s ease-out;
+            pointer-events: none;
+        }
+
+        /* Slide-in al entrar en viewport (Intersection Observer) */
+        .slide-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Bloques de código con botón copiar (Quick start) */
+        .code-block-wrap {
+            position: relative;
+            margin-top: 0.75rem;
+        }
+
+        .code-block-wrap pre.code-block {
+            margin: 0;
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            padding: 0.85rem 3rem 0.85rem 1rem;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .code-copy-btn {
+            position: absolute;
+            top: 0.35rem;
+            right: 0.35rem;
+            padding: 0.45rem;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--accent);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .code-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .code-copy-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Beta slots: barra con marcadores 80% / 95% */
+        .beta-slots-track {
+            position: relative;
+            width: 100%;
+            height: 8px;
+            background: var(--surface-raised);
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .beta-slots-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.5s ease;
+            border-radius: 999px;
+        }
+
+        .beta-slots-marker {
+            position: absolute;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .beta-slots-marker--warn {
+            left: 80%;
+            background: #eab308;
+            opacity: 0.55;
+        }
+
+        .beta-slots-marker--crit {
+            left: 95%;
+            background: #ef4444;
+            opacity: 0.55;
+        }
+
+        .beta-slots-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.35rem;
+            font-size: 0.7rem;
+            color: var(--text-dimmer);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .quick-start-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .quick-start-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 1.25rem 1.25rem 1.5rem;
+        }
+
+        .quick-start-card h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-start-card p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .cta-button {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            color: var(--bg);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            line-height: 1.8;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn {
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            box-shadow: 0 0 40px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--text);
+            background: var(--surface-raised);
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-dimmer);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 8rem 0;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            border-color: var(--accent);
+            background: var(--surface-raised);
+            transform: translateY(-4px);
+        }
+
+        .product-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .product-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .product-card p {
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .product-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .product-list li {
+            padding: 0.5rem 0;
+            color: var(--text-dimmer);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-list li::before {
+            content: '▸';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .product-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-link:hover {
+            gap: 1rem;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 8rem 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature {
+            text-align: left;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 8rem 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .pricing-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            background: var(--surface-raised);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-period {
+            color: var(--text-dimmer);
+            font-size: 1rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 5rem 0 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dimmer);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav .container {
+                height: 60px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 60px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
+            .product-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 0.5rem;
+        }
+
+        .badge.stable { 
+            background: rgba(0, 255, 136, 0.2); 
+            color: var(--accent); 
+            border: 1px solid var(--accent);
+        }
+
+        .badge.beta { 
+            background: rgba(0, 136, 255, 0.2); 
+            color: #0088ff; 
+            border: 1px solid #0088ff;
+        }
+
+        .badge.alpha { 
+            background: rgba(255, 165, 0, 0.2); 
+            color: #ffa500; 
+            border: 1px solid #ffa500;
+        }
+
+        .badge.mvp, .badge.phase1 { 
+            background: rgba(255, 215, 0, 0.2); 
+            color: #ffd700; 
+            border: 1px solid #ffd700;
+        }
+
+        .badge.design { 
+            background: rgba(128, 128, 128, 0.2); 
+            color: #888; 
+            border: 1px solid #555;
+        }
+
+        .badge.research { 
+            background: rgba(138, 43, 226, 0.2); 
+            color: #8a2be2; 
+            border: 1px solid #8a2be2;
+        }
+
+        .badge.pre-release { 
+            background: rgba(100, 200, 255, 0.2); 
+            color: #64c8ff; 
+            border: 1px solid #64c8ff;
+        }
+
+        .badge.experimental { 
+            background: rgba(255, 69, 0, 0.2); 
+            color: #ff4500; 
+            border: 1px solid #ff4500;
+        }
+
+        .badge.dev { 
+            background: rgba(255, 255, 0, 0.2); 
+            color: #ffff00; 
+            border: 1px solid #999900;
+        }
+    
+        :root {
+            --bg-secondary: var(--surface);
+        }
+
+        .agents-section {
+            padding: 6rem 0;
+        }
+
+        .agents-section--tight {
+            padding: 4rem 0;
+        }
+
+        .hero .hero-tagline {
+            font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .hero .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-dim);
+            margin-bottom: 0;
+            max-width: 700px;
+        }
+
+        .hero .hero-lead-spacer {
+            margin-bottom: 2rem;
+        }
+
+        .section-block h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .about-content .lead {
+            font-size: 1.15rem;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+            line-height: 1.75;
+        }
+
+        .about-content p {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .alert-box {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .alert-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .alert-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            flex-shrink: 0;
+            color: var(--accent);
+            margin-top: 0.15rem;
+        }
+
+        .alert-box h3 {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.35rem;
+            font-size: 1.05rem;
+        }
+
+        .alert-box p {
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .agents-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .feature-card .feature-icon {
+            width: 5rem;
+            height: 5rem;
+            margin: 0 auto 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .philosophy-content p {
+            color: var(--text-dim);
+            max-width: 800px;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .philosophy-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .principle {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .principle-icon {
+            font-size: 1.75rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .philosophy-content .secondary-btn {
+            margin-top: 1rem;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .use-case-card {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+        }
+
+        .use-case-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .waitlist-content {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .waitlist-content > p {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        .waitlist-form {
+            text-align: center;
+        }
+
+        .waitlist-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 1rem auto 0;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .waitlist-benefits li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-dim);
+        }
+
+        .waitlist-benefits li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .roadmap-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .roadmap-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+        }
+
+        .roadmap-item p {
+            flex: 1 1 100%;
+            margin: 0.5rem 0 0;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .roadmap-date {
+            font-weight: 700;
+            font-size: 1.125rem;
+            min-width: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+        }
+
+        .roadmap-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .status-progress {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent);
+        }
+
+        .status-planned {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dim);
+        }
+
+        .cta-section {
+            padding: 6rem 0 8rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .features-section {
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .philosophy-section,
+        .use-cases-section {
+            border-top: 1px solid var(--border);
+        }
+
+        .waitlist-section,
+        .roadmap-section {
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .roadmap-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+    <noscript>
+        <style>.slide-in { opacity: 1 !important; transform: none !important; }</style>
+    </noscript>
+</head>
+
+<body class="agents-page">
+    <div class="grid-bg"></div>
+
+    <div id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Reading progress"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="/">HALETHEIA</a></div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/security.html">Security</a></li>
+                <li><a href="/agents.html">Agents</a></li>
+                <li><a href="/knowledge.html">Knowledge</a></li>
+                <li><a href="/hcp.html">HCP Protocol</a></li>
+            </ul>
+            <a href="/waitlist.html" class="cta-button">Join Beta</a>
+        </div>
+    </nav>
+
+    <section class="hero glow slide-in">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <span class="eyebrow">LiiaDA · Ethical AI Agent Framework</span>
+                <h1>Agent Framework</h1>
+                <p class="hero-tagline mono">Ethical AI orchestration</p>
+                <p class="hero-subtitle hero-lead-spacer">Coming Q3 2026 · Early access program</p>
+                <div class="hero-actions">
+                    <a href="#waitlist" class="primary-btn">Request beta access</a>
+                    <a href="/" class="secondary-btn">Back to home</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section agents-section--tight alert-section slide-in">
+        <div class="container">
+            <div class="alert-box">
+                <div class="alert-row">
+                    <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <h3>Early Access Program</h3>
+                        <p>The LiiaDA Agent Framework is in active development under IP protection until Q3&nbsp;2026. Join the waitlist for limited beta spots; no internal architecture is disclosed on this page.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section about-section slide-in">
+        <div class="container section-block">
+            <h2>What is LiiaDA?</h2>
+            <div class="about-content">
+                <p class="lead">
+                    LiiaDA is an <strong>Ethical AI Agent Framework</strong> intended for production settings where trust, transparency, and safety are non‑negotiable.
+                </p>
+                <p>
+                    It emphasizes <strong>agentic orchestration</strong> with ethical guardrails, <strong>Model Context Protocol (MCP)</strong> support for tools and data sources, and <strong>RAG</strong>‑grounded answers when paired with our knowledge stack — without exposing proprietary internals.
+                </p>
+                <p>
+                    Unlike stacks that optimize only for raw capability, LiiaDA foregrounds <strong>epistemic humility</strong> (knowing when to say “I don’t know”), <strong>ethical boundaries</strong>, <strong>cultural adaptation</strong>, and <strong>narrative coherence</strong> across longer workflows.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section features-section slide-in agents-page">
+        <div class="container section-block">
+            <h2>Key capabilities</h2>
+            <p style="color:var(--text-dim);max-width:720px;line-height:1.7">High‑level only; implementation details remain private until the hybrid publication model in Q3&nbsp;2026.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#a855f7,#ec4899)"><span style="font-size:1.75rem;line-height:1">🧠</span></div>
+                    <h3>Epistemic humility</h3>
+                    <p>Systems that can honestly signal uncertainty instead of over‑confident guesses.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#10b981,#059669)"><span style="font-size:1.75rem;line-height:1">⚖️</span></div>
+                    <h3>Ethical by design</h3>
+                    <p>Hippocratic‑inspired principles: do no harm, with pre‑gates and post‑checks on sensitive actions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#3b82f6,#6366f1)"><span style="font-size:1.75rem;line-height:1">🌍</span></div>
+                    <h3>Cultural adaptation</h3>
+                    <p>Respects language and context so behavior fits the user’s environment.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#f97316,#ef4444)"><span style="font-size:1.75rem;line-height:1">💾</span></div>
+                    <h3>Built‑in memory</h3>
+                    <p>Multi‑layer memory for tasks, durable patterns, and preferences — described at a product level only.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)"><span style="font-size:1.75rem;line-height:1">🔗</span></div>
+                    <h3>RAG integration</h3>
+                    <p>Works with <strong>hidden‑brain</strong> for knowledge‑grounded responses (public RAG&nbsp;4.0 positioning).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#ef4444,#f97316)"><span style="font-size:1.75rem;line-height:1">🛡️</span></div>
+                    <h3>Security by design</h3>
+                    <p>Aligned with the HALETHEIA security posture (e.g. Sentinel, babuino, aronly) for safer agent execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section philosophy-section slide-in">
+        <div class="container section-block">
+            <h2>Ethical foundations</h2>
+            <div class="philosophy-content">
+                <p>
+                    Directionally aligned with the <strong>Manifesto for Ethical Use of AI</strong> (MEIA) — a public philosophical framework developed over 11 months of research (May&nbsp;2025 – April&nbsp;2026).
+                </p>
+                <div class="philosophy-principles">
+                    <div class="principle"><span class="principle-icon">🎯</span><span><strong>Transparency:</strong> decisions should be traceable and reviewable at the product boundary.</span></div>
+                    <div class="principle"><span class="principle-icon">🤝</span><span><strong>Respect:</strong> user autonomy and consent stay central.</span></div>
+                    <div class="principle"><span class="principle-icon">⚖️</span><span><strong>Fairness:</strong> contextual and cultural awareness by design.</span></div>
+                    <div class="principle"><span class="principle-icon">🛡️</span><span><strong>Safety:</strong> “do no harm” as a default stance.</span></div>
+                </div>
+                <a href="https://github.com/haletheia" class="secondary-btn" target="_blank" rel="noopener noreferrer">Read the manifesto →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section use-cases-section slide-in">
+        <div class="container section-block">
+            <h2>Use cases</h2>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <h3>🤖 Autonomous operations</h3>
+                    <p>Email triage, calendar management, research assistance — 24/7 with explicit ethical boundaries.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>📊 Business intelligence</h3>
+                    <p>Analyze data, generate insights, prepare reports — with privacy and confidentiality in scope.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>🎓 Personal knowledge</h3>
+                    <p>Build a personal knowledge graph, retrieve context, connect insights — local‑first options where applicable.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>👨‍💻 Development assistant</h3>
+                    <p>Code reviews, documentation, testing — integrated with your workflow and conventions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="waitlist" class="agents-section waitlist-section slide-in">
+        <div class="container section-block">
+            <h2>Join the beta waitlist</h2>
+            <div class="waitlist-content">
+                <p>Limited spots for the Q3&nbsp;2026 beta. Use GitHub Discussions to request access; we will not ask for proprietary details in the first message.</p>
+                <div class="waitlist-form">
+                    <a href="https://github.com/haletheia/discussions/new?category=beta-access&amp;title=LiiaDA%20Beta%20Access%20Request" class="primary-btn" target="_blank" rel="noopener noreferrer">Request beta access</a>
+                </div>
+                <p class="text-sm" style="font-size:0.85rem;margin-top:1.5rem">Beta participants may receive:</p>
+                <ul class="waitlist-benefits">
+                    <li>Early access to the LiiaDA framework surface (under program terms)</li>
+                    <li>Direct feedback channel with the core team</li>
+                    <li>50% discount on a future Pro tier if launched</li>
+                    <li>Priority support via GitHub Discussions</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section roadmap-section slide-in">
+        <div class="container section-block">
+            <h2>Development roadmap</h2>
+            <div class="roadmap-timeline">
+                <div class="roadmap-item">
+                    <div class="roadmap-date">Q2 2026</div>
+                    <div class="roadmap-status status-progress">In progress</div>
+                    <p>Internal validation and IP strategy — framework remains private.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-date">Q3 2026</div>
+                    <div class="roadmap-status status-planned">Planned</div>
+                    <p>Beta (limited users) and hybrid publication: public APIs/docs where appropriate, core protected.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-date">Q4 2026</div>
+                    <div class="roadmap-status status-planned">Planned</div>
+                    <p>Public v1.0 directionally tied to the AIR registry story — details TBA.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section slide-in">
+        <div class="container">
+            <h2>Stay updated</h2>
+            <div class="cta-buttons">
+                <a href="https://github.com/haletheia/discussions" class="primary-btn" target="_blank" rel="noopener noreferrer">Join discussions</a>
+                <a href="/" class="secondary-btn">Back to home</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="get-started">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="logo">HALETHEIA</div>
+                    <p style="color: var(--text-dim); margin-top: 1rem; font-size: 0.9rem;">Secure, Intelligent, Ethical AI Infrastructure</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <ul class="footer-links">
+                        <li><a href="security.html">Security Stack</a></li>
+                        <li><a href="knowledge.html">Knowledge Stack</a></li>
+                        <li><a href="agents.html">Agent Framework</a></li>
+                        <li><a href="hcp.html">HCP Protocol</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="docs/">Documentation</a></li>
+                        <li><a href="https://github.com/haletheia">GitHub</a></li>
+                        <li><a href="#">Examples</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/haletheia/discussions">Discussions</a></li>
+                        <li><a href="https://twitter.com/haletheia_">Twitter</a></li>
+                        <li><a href="https://linkedin.com/company/haletheia">LinkedIn (soon)</a></li>
+                        <li><a href="#" title="Coming soon">Discord (Soon)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 HALETHEIA. Open source under MIT License.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function updateScrollProgress() {
+            var bar = document.getElementById('progress-bar');
+            if (!bar) return;
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var pct = height <= 0 ? 0 : (winScroll / height) * 100;
+            bar.style.width = pct + '%';
+            bar.setAttribute('aria-valuenow', String(Math.round(pct)));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateScrollProgress();
+            window.addEventListener('scroll', updateScrollProgress, { passive: true });
+            window.addEventListener('resize', updateScrollProgress);
+
+            var slideEls = document.querySelectorAll('.slide-in');
+            if (slideEls.length && 'IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                slideEls.forEach(function (el) { observer.observe(el); });
+            } else {
+                slideEls.forEach(function (el) { el.classList.add('visible'); });
+            }
+        });
+    </script>
+</body>
+</html>

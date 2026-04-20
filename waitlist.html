@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Waitlist — HALETHEIA</title>
+    <meta name="description" content="Join the Security Triad v2.0 private beta. Early access, 50% discount on Pro tier, exclusive community.">
+    
+    <meta property="og:title" content="Join Waitlist — HALETHEIA">
+    <meta property="og:description" content="Security Triad v2.0 private beta. Limited spots available.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://haletheia.github.io/waitlist.html">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --surface-raised: #1a1a1a;
+            --border: #222222;
+            --text: #ffffff;
+            --text-dim: #888888;
+            --text-dimmer: #555555;
+            --accent: #00ff88;
+            --accent-dim: rgba(0, 255, 136, 0.1);
+            --accent-glow: rgba(0, 255, 136, 0.3);
+            --spacing: clamp(1rem, 5vw, 2rem);
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+            z-index: -1;
+            animation: grid-shift 20s linear infinite;
+        }
+
+        @keyframes grid-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .waitlist-hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            padding-bottom: 4rem;
+            text-align: center;
+        }
+
+        .waitlist-hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: var(--text-dim);
+            max-width: 700px;
+            line-height: 1.8;
+            margin: 0 auto 2rem;
+        }
+
+        .waitlist-form-section {
+            padding: 4rem 0 8rem;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .benefits-list {
+            margin-bottom: 2.5rem;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .benefits-list li {
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+
+        .waitlist-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .waitlist-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .waitlist-form input,
+        .waitlist-form select {
+            width: 100%;
+            padding: 0.85rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        .waitlist-form input:focus,
+        .waitlist-form select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1.25rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 40px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-dimmer);
+            line-height: 1.6;
+        }
+
+        footer {
+            padding: 5rem 0 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dimmer);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            nav .container {
+                height: 60px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .waitlist-hero {
+                padding-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="/">HALETHEIA</a></div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/security.html">Security</a></li>
+                <li><a href="/agents.html">Agents</a></li>
+                <li><a href="/knowledge.html">Knowledge</a></li>
+                <li><a href="/hcp.html">HCP Protocol</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="waitlist-hero">
+        <div class="container">
+            <h1>Join the Private Beta</h1>
+            <p class="hero-subtitle">
+                Security Triad v2.0 launches Q2 2026. Be among the first to get production-grade 
+                AI security with 4 architectural layers. Limited spots available.
+            </p>
+        </div>
+    </section>
+
+    <section class="waitlist-form-section">
+        <div class="container">
+            <div class="form-container">
+                <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">What You'll Get</h2>
+                <ul class="benefits-list">
+                    <li>✅ Early access to Security Triad v2.0 (Xokito, Ethilia, GAIA, Cutufato)</li>
+                    <li>✅ Priority support during beta phase</li>
+                    <li>✅ 50% discount on Pro tier (first 6 months)</li>
+                    <li>✅ Direct feedback channel with founders</li>
+                    <li>✅ Exclusive Discord community</li>
+                </ul>
+
+                <div style="text-align: center; margin-top: 3rem; padding: 3rem 2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--accent);">No Forms. No Spam. Pure Security.</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 2.5rem; font-size: 1.05rem; line-height: 1.6; max-width: 500px; margin-left: auto; margin-right: auto;">
+                        In line with our privacy-first philosophy, we don't collect your data through vulnerable web forms. 
+                        To join the beta, introduce yourself in our GitHub Discussions or reach out directly to the founder.
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://github.com/haletheia/discussions" class="btn-primary" style="width: auto; border-radius: 4px;">Join via GitHub</a>
+                        <a href="https://twitter.com/haletheia_" class="btn-primary" style="width: auto; background: transparent; border: 1px solid var(--border); color: var(--text); border-radius: 4px;">DM on Twitter</a>
+                    </div>
+                </div>
+
+                <p class="form-footer" style="margin-top: 3rem;">
+                    Beta invites sent on a rolling basis starting Q2 2026.<br>
+                    For enterprise inquiries, reach out via Twitter or GitHub.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="logo"><a href="/" style="color:inherit;text-decoration:none">HALETHEIA</a></div>
+                    <p style="color: var(--text-dim); margin-top: 1rem; font-size: 0.9rem;">Secure, Intelligent, Ethical AI Infrastructure</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <ul class="footer-links">
+                        <li><a href="/security.html">Security Stack</a></li>
+                        <li><a href="/knowledge.html">Knowledge Stack</a></li>
+                        <li><a href="/agents.html">Agent Framework</a></li>
+                        <li><a href="/hcp.html">HCP Protocol</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="/docs/">Documentation</a></li>
+                        <li><a href="https://github.com/haletheia">GitHub</a></li>
+                        <li><a href="#">Examples</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/haletheia/discussions">Discussions</a></li>
+                        <li><a href="https://twitter.com/haletheia_">Twitter</a></li>
+                        <li><a href="https://linkedin.com/company/haletheia">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 HALETHEIA. Open source under MIT License.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
