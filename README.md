@@ -63,14 +63,4 @@ python3 -m http.server 8000
 
 ---
 
-## 🌐 Deployment
-
-Deployment is fully automated via GitHub Actions whenever changes are pushed to the `main` branch.
-
-1. Modify any HTML, CSS, or JS directly.
-2. Commit and push your changes to `main`.
-3. GitHub Actions will build and deploy the site in ~30 seconds.
-
----
-
 **Organization**: [github.com/haletheia](https://github.com/haletheia)
