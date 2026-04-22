@@ -1,5 +1,10 @@
 # HALETHEIA Organization Website
 
+<div align="center">
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Visits](https://komarev.com/ghpvc/?username=haletheia-github-io&color=blue)]()
+</div>
+
 Official landing page and public documentation hub for the HALETHEIA ecosystem.
 [https://haletheia.github.io](https://haletheia.github.io)
 
