@@ -14,22 +14,16 @@ Official landing page and public documentation hub for the HALETHEIA ecosystem.
 
 ## 🎯 Architecture
 
-This repository hosts the static frontend for the HALETHEIA platform. It serves as the public entry point showcasing our Open Core model: 5 Core Stacks, 14 Public Projects, the Security Triad v2.0, Hidden-Brain RAG 4.0, and the NIDALI Agent Harness.
+This repository hosts the static frontend for the HALETHEIA platform. It serves as the public entry point showcasing our Open Core model: 5 Core Stacks, 14 Public Projects, the Security Triad v2.0, Internal Knowledge Engine, and the NIDALI Enterprise Harness.
 
 ```text
 haletheia.github.io/
 ├── index.html              # Main landing page (Ecosystem Overview)
-├── security.html           # Security Stack (Xokito, Ethilia, GAIA, Cutufato)
-├── knowledge.html          # Knowledge Stack (Hidden-Brain RAG 4.0)
-├── agents.html             # NIDALI Harness (NIDA, LiiaDA, AIR Platform)
-├── hcp.html                # HCP Protocol (Context Engineering)
-├── waitlist.html           # Beta Access Waitlist
-├── products/               
-│   └── security-triad.html # Deep dive into the Security Triad
-├── README.md               # This documentation
-└── .github/
-    └── workflows/
-        └── deploy.yml      # GitHub Actions CI/CD for automated deployments
+├── documentation.html      # Technical Guides (Gateway, Security, HCP)
+├── use-cases.html          # Corporate & Enterprise Use Cases
+├── specs.html              # HCP Protocol Specifications
+├── waitlist.html           # NIDALI Beta Access Waitlist
+└── README.md               # This documentation
 ```
 
 ---
